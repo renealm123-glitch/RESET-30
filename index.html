@@ -61,23 +61,45 @@
       <button class="primary" onclick="startReset()">COMEÇAR DIA 1 →</button>
     </section>
 
-    <section class="screen" id="screen-5">
-      <div class="top"><span class="brand">RESET 30</span><span id="dayLabel">DIA 01 / 30</span></div>
-      <div class="welcome"><div><p class="eyebrow">SEU RESET</p><h2>Hoje é dia de continuar.</h2></div><div class="streak">🔥 <b id="streak">1</b><small>dias</small></div></div>
-      <div class="progress-card"><div><span>Progresso de hoje</span><b id="percent">0%</b></div><div class="task-summary" id="taskSummary">0 / 5 missões concluídas</div><div class="bar"><i id="progressBar"></i></div></div>
-      <h3>📋 Missões de hoje</h3>
-      <div class="tasks" id="tasks">
-        <label><input type="checkbox" onchange="taskChanged()"> <span>🎯 25 min de foco profundo</span></label>
-        <label><input type="checkbox" onchange="taskChanged()"> <span>🏋️ 20 min de atividade física</span></label>
-        <label><input type="checkbox" onchange="taskChanged()"> <span>📱 30 min sem celular</span></label>
-        <label><input type="checkbox" onchange="taskChanged()"> <span>📖 10 min de leitura</span></label>
-        <label><input type="checkbox" onchange="taskChanged()"> <span>😴 Dormir no horário planejado</span></label>
+    <section class="screen dashboard" id="screen-5">
+      <div class="dash-top">
+        <div><span class="brand">RESET <span>30</span></span><p class="dash-kicker">SEU DESAFIO</p></div>
+        <div class="day-badge"><span id="dayLabel">DIA 01 / 30</span></div>
       </div>
-      <button class="add-habit" onclick="openHabitModal()">＋ ADICIONAR AO MEU RESET</button>
-      <p class="habit-tip">Você pode acrescentar novos hábitos aos poucos. Consistência antes de quantidade.</p>
-      <div class="energy"><span>⚡ Energia</span><b id="energyValue">78 / 100</b><div class="bar"><i id="energyBar" style="width:78%"></i></div></div>
-      <button class="emergency" onclick="goTo(9)">🚨 ESTOU QUASE DESISTINDO</button>
-      <nav class="bottom"><button onclick="goTo(5)">🏠<small>Hoje</small></button><button onclick="goTo(6)">📊<small>Progresso</small></button><button onclick="goTo(7)">📅<small>Histórico</small></button><button onclick="goTo(8)">🏆<small>Conquistas</small></button><button onclick="goTo(10)">⚙️<small>Perfil</small></button></nav>
+
+      <div class="welcome-premium">
+        <div>
+          <p class="eyebrow">CONTINUE AVANÇANDO</p>
+          <h2>Hoje é dia de continuar.</h2>
+          <p class="welcome-sub">Não precisa ser perfeito. Só precisa continuar.</p>
+        </div>
+        <div class="streak-premium"><span>🔥</span><b id="streak">1</b><small>dias</small></div>
+      </div>
+
+      <div class="progress-hero">
+        <div class="progress-head"><div><span>PROGRESSO DE HOJE</span><strong id="taskSummary">0 / 5 missões</strong></div><b id="percent">0%</b></div>
+        <div class="bar premium-bar"><i id="progressBar"></i></div>
+        <div class="progress-foot"><span>Seu padrão está sendo construído.</span><span>30 dias</span></div>
+      </div>
+
+      <div class="section-title-row"><div><p class="eyebrow">SEU DIA</p><h3>Missões de hoje</h3></div><span class="mission-count">5 BASE</span></div>
+      <div class="tasks premium-tasks" id="tasks">
+        <label><input type="checkbox" onchange="taskChanged()"> <span><b>🎯 Foco profundo</b><small>25 minutos sem distrações</small></span><em>+4</em></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span><b>🏋️ Atividade física</b><small>20 minutos de movimento</small></span><em>+4</em></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span><b>📱 Pausa do celular</b><small>30 minutos longe da tela</small></span><em>+4</em></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span><b>📖 Leitura</b><small>10 minutos de leitura</small></span><em>+4</em></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span><b>😴 Sono planejado</b><small>Dormir no horário definido</small></span><em>+4</em></label>
+      </div>
+
+      <button class="add-habit premium-add" onclick="openHabitModal()"><span class="add-icon">＋</span><span><b>Adicionar ao meu Reset</b><small>Crie um hábito e evolua aos poucos</small></span><strong>›</strong></button>
+
+      <div class="energy-premium">
+        <div class="energy-top"><div><span class="energy-label">⚡ ENERGIA</span><small>Seu combustível para continuar</small></div><b id="energyValue">78 / 100</b></div>
+        <div class="bar energy-bar"><i id="energyBar" style="width:78%"></i></div>
+      </div>
+
+      <button class="emergency premium-emergency" onclick="goTo(9)"><span>🆘</span><span><b>Preciso de ajuda para continuar</b><small>Abra o Modo Emergência</small></span><strong>›</strong></button>
+      <nav class="bottom premium-bottom"><button class="nav-active" onclick="goTo(5)"><span>⌂</span><small>Hoje</small></button><button onclick="goTo(6)"><span>◒</span><small>Progresso</small></button><button onclick="goTo(7)"><span>▦</span><small>Histórico</small></button><button onclick="goTo(8)"><span>◇</span><small>Conquistas</small></button><button onclick="goTo(10)"><span>⚙</span><small>Perfil</small></button></nav>
     </section>
 
     <section class="screen" id="screen-6">
