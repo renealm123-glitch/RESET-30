@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RESET 30</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+    <section class="screen active" id="screen-1">
+      <div class="brand">RESET <span>30</span></div>
+      <div class="hero">
+        <div class="orb">30</div>
+        <p class="eyebrow">30 DIAS • UM NOVO PADRÃO</p>
+        <h1>Você está pronto para o seu Reset?</h1>
+        <p>Pequenas mudanças todos os dias. Um novo padrão no final.</p>
+        <button class="primary" onclick="goTo(2)">COMEÇAR MEU RESET →</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-2">
+      <div class="top"><span class="brand">RESET 30</span><span>2 / 11</span></div>
+      <h2>🧠 Personalize seu Reset</h2>
+      <p class="muted">O que você quer mudar nos próximos 30 dias?</p>
+      <div class="options multi" data-group="changes">
+        <button>📱 Reduzir o celular</button><button>🎯 Aumentar meu foco</button>
+        <button>⏰ Parar de procrastinar</button><button>🏋️ Criar disciplina</button>
+        <button>😴 Melhorar minha rotina</button><button>📚 Estudar mais</button>
+        <button>🧘 Ter mais calma</button><button>🔥 Sair da zona de conforto</button>
+      </div>
+      <h3>🎯 Qual é seu principal objetivo?</h3>
+      <div class="options single" data-group="goal">
+        <button>Recuperar meu foco</button><button>Controlar melhor meu celular</button>
+        <button>Criar disciplina</button><button>Parar de procrastinar</button><button>Construir uma rotina melhor</button>
+      </div>
+      <button class="primary" onclick="goTo(3)">CONTINUAR →</button>
+    </section>
+
+    <section class="screen" id="screen-3">
+      <div class="top"><span class="brand">RESET 30</span><span>3 / 11</span></div>
+      <h2>📋 Seu ponto de partida</h2>
+      <p class="muted">Responda rapidamente. Não existe resposta certa.</p>
+      <h3>Quanto tempo você passa no celular por dia?</h3>
+      <div class="options single" data-group="phone"><button>🟢 Menos de 2h</button><button>🟡 2–4h</button><button>🟠 4–6h</button><button>🔴 6–8h</button><button>🔥 Mais de 8h</button></div>
+      <h3>Como está seu foco?</h3>
+      <div class="options single" data-group="focus"><button>😎 Fácil</button><button>🙂 Às vezes me distraio</button><button>😐 Tenho dificuldade</button><button>😵 Quase não consigo</button></div>
+      <h3>Como está sua energia?</h3>
+      <div class="options single" data-group="energy"><button>⚡ Muito alta</button><button>🙂 Boa</button><button>😐 Normal</button><button>😴 Baixa</button><button>🪫 Muito baixa</button></div>
+      <button class="primary" onclick="goTo(4)">VER MEU RESET →</button>
+    </section>
+
+    <section class="screen" id="screen-4">
+      <div class="top"><span class="brand">RESET 30</span><span>4 / 11</span></div>
+      <div class="plan-card">
+        <p class="eyebrow">SEU PLANO ESTÁ PRONTO</p>
+        <h2>🗓️ 30 dias para construir um novo padrão</h2>
+        <div class="stats"><div><b>30</b><small>dias</small></div><div><b>5</b><small>missões/dia</small></div><div><b>25m</b><small>foco inicial</small></div></div>
+        <p>O desafio começa leve e aumenta gradualmente. O objetivo é consistência, não perfeição.</p>
+      </div>
+      <button class="primary" onclick="startReset()">COMEÇAR DIA 1 →</button>
+    </section>
+
+    <section class="screen" id="screen-5">
+      <div class="top"><span class="brand">RESET 30</span><span id="dayLabel">DIA 01 / 30</span></div>
+      <div class="welcome"><div><p class="eyebrow">SEU RESET</p><h2>Hoje é dia de continuar.</h2></div><div class="streak">🔥 <b id="streak">1</b><small>dias</small></div></div>
+      <div class="progress-card"><div><span>Progresso de hoje</span><b id="percent">0%</b></div><div class="bar"><i id="progressBar"></i></div></div>
+      <h3>📋 Missões de hoje</h3>
+      <div class="tasks" id="tasks">
+        <label><input type="checkbox" onchange="taskChanged()"> <span>🎯 25 min de foco profundo</span></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span>🏋️ 20 min de atividade física</span></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span>📱 30 min sem celular</span></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span>📖 10 min de leitura</span></label>
+        <label><input type="checkbox" onchange="taskChanged()"> <span>😴 Dormir no horário planejado</span></label>
+      </div>
+      <div class="energy"><span>⚡ Energia</span><b id="energyValue">78 / 100</b><div class="bar"><i style="width:78%"></i></div></div>
+      <button class="emergency" onclick="goTo(9)">🚨 ESTOU QUASE DESISTINDO</button>
+      <nav class="bottom"><button onclick="goTo(5)">🏠<small>Hoje</small></button><button onclick="goTo(6)">📊<small>Progresso</small></button><button onclick="goTo(7)">📅<small>Histórico</small></button><button onclick="goTo(8)">🏆<small>Conquistas</small></button><button onclick="goTo(10)">⚙️<small>Perfil</small></button></nav>
+    </section>
+
+    <section class="screen" id="screen-6">
+      <div class="top"><span class="brand">RESET 30</span><span>6 / 11</span></div><h2>📊 Seu progresso</h2><p class="muted">Você está construindo um novo padrão.</p>
+      <div class="big-stat"><b>07 / 30</b><span>🔥 7 dias de sequência</span></div>
+      <div class="metric"><span>🧠 Foco</span><b>78%</b><div class="bar"><i style="width:78%"></i></div><small>+24% desde o Dia 1</small></div>
+      <div class="metric"><span>📱 Controle do celular</span><b>3h 42min</b><small>1h 18min menos que no início</small></div>
+      <div class="metric"><span>⚡ Consistência</span><b>76%</b><div class="bar"><i style="width:76%"></i></div><small>32 / 42 missões concluídas</small></div>
+      <div class="mini-chart"><span style="height:35%"></span><span style="height:45%"></span><span style="height:55%"></span><span style="height:62%"></span><span style="height:70%"></span><span style="height:78%"></span></div>
+      <button class="secondary" onclick="goTo(5)">← VOLTAR PARA HOJE</button>
+    </section>
+
+    <section class="screen" id="screen-7">
+      <div class="top"><span class="brand">RESET 30</span><span>7 / 11</span></div><h2>📅 Seu histórico</h2><p class="muted">Cada dia conta.</p>
+      <div class="calendar" id="calendar"></div>
+      <div class="legend">🟢 Completo &nbsp; 🟡 Parcial &nbsp; 🔴 Perdido &nbsp; ⚪ Futuro</div>
+      <div class="history-card"><b>DIA 03</b><p>✅ 4/5 missões concluídas</p><p>⚡ Energia: 72% · 🎯 Foco: 25 min</p><strong>“Você não foi perfeito. Mas continuou.”</strong></div>
+      <button class="secondary" onclick="goTo(5)">← VOLTAR PARA HOJE</button>
+    </section>
+
+    <section class="screen" id="screen-8">
+      <div class="top"><span class="brand">RESET 30</span><span>8 / 11</span></div><h2>🏆 Suas conquistas</h2><p class="muted">Você está indo mais longe do que imagina.</p>
+      <div class="achievement-grid">
+        <div class="achievement">🏅<b>Primeiro passo</b><small>Dia 1</small></div><div class="achievement">🔥<b>3 dias</b><small>Sequência</small></div>
+        <div class="achievement">⚡<b>Semana completa</b><small>7 dias</small></div><div class="achievement">🎯<b>Foco profundo</b><small>10 sessões</small></div>
+        <div class="achievement locked">🔒<b>???</b><small>Continue</small></div><div class="achievement locked">🔒<b>???</b><small>Continue</small></div>
+      </div>
+      <button class="secondary" onclick="goTo(5)">← VOLTAR PARA HOJE</button>
+    </section>
+
+    <section class="screen" id="screen-9">
+      <div class="top"><span class="brand">RESET 30</span><span>🚨</span></div><div class="emergency-page"><div class="warning">🚨</div><h2>Está pensando em desistir?</h2><p>Não precisa resolver tudo agora. Só precisa vencer os próximos 2 minutos.</p>
+      <div class="quick-actions"><button onclick="startTimer('AFASTE O CELULAR')">📱 Afastar o celular</button><button onclick="startTimer('MOVIMENTE-SE')">🚶 Movimente-se</button><button onclick="startTimer('RESPIRAÇÃO')">🫁 Respiração</button><button onclick="startTimer('QUEBRE O IMPULSO')">🧠 Quebre o impulso</button><button onclick="startTimer('LEIA UMA PÁGINA')">📖 Leia uma página</button></div>
+      <div id="timerBox" class="timer hidden"><b id="timerTitle">AÇÃO</b><strong id="timer">02:00</strong><div class="bar"><i id="timerBar"></i></div></div>
+      <button class="secondary" onclick="goTo(5)">← VOLTAR AO MEU DIA</button></div>
+    </section>
+
+    <section class="screen" id="screen-10">
+      <div class="top"><span class="brand">RESET 30</span><span>10 / 11</span></div><h2>⚙️ Meu Reset</h2>
+      <div class="profile"><div class="avatar">R</div><h3>Meu perfil</h3><p>Objetivo: Recuperar meu foco</p><p>Dia atual: 07 / 30 · 🔥 7 dias</p></div>
+      <div class="settings"><button>🎯 Editar objetivo <span>›</span></button><button>📋 Editar desafio <span>›</span></button><button>🔔 Notificações <span>›</span></button><button>🌙 Aparência <span>›</span></button><button>💾 Dados do meu Reset <span>›</span></button><button>❓ Ajuda <span>›</span></button></div>
+      <button class="danger" onclick="resetApp()">REINICIAR RESET</button><button class="secondary" onclick="goTo(5)">← VOLTAR PARA HOJE</button>
+    </section>
+
+    <section class="screen" id="screen-11">
+      <div class="brand">RESET <span>30</span></div><div class="completion"><div class="confetti">✦ ✧ ✦</div><p class="eyebrow">RESET COMPLETO</p><h1>VOCÊ CONSEGUIU.</h1><p>30 dias concluídos.</p><div class="final-number">30 / 30</div>
+      <div class="final-stats"><div>🔥<b>23</b><small>dias de sequência</small></div><div>🎯<b>87%</b><small>consistência</small></div><div>⚡<b>96</b><small>missões</small></div></div>
+      <blockquote>“Você não construiu apenas uma sequência.<br>Você construiu um novo padrão.”</blockquote>
+      <button class="primary" onclick="goTo(1)">🔄 COMEÇAR NOVO RESET</button><button class="secondary" onclick="goTo(6)">📊 VER MINHA JORNADA</button></div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
