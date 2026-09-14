@@ -1,12 +1,34 @@
-const state={screen:1,day:1,tasks:0,energy:78};let timerInterval=null;
-function goTo(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active');state.screen=n;window.scrollTo({top:0,behavior:'smooth'});save();}
+const state={screen:1,day:1,tasks:0,energy:78,customHabits:[],customDone:{}};let timerInterval=null;
+const baseTaskCount=5;
+function goTo(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById('screen-'+n);if(screen)screen.classList.add('active');state.screen=n;window.scrollTo({top:0,behavior:'smooth'});save();}
+
 document.querySelectorAll('.options').forEach(group=>{group.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;if(group.classList.contains('single'))group.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));e.target.classList.toggle('selected');});});
-function startReset(){state.day=1;state.tasks=0;state.energy=78;save();resetTasks();goTo(5);}
-function resetTasks(){document.querySelectorAll('#tasks input').forEach(i=>{i.checked=false;i.parentElement.classList.remove('done')});taskChanged();}
-function taskChanged(){const boxes=[...document.querySelectorAll('#tasks input')];const done=boxes.filter(x=>x.checked).length;state.tasks=done;const pct=Math.round(done/boxes.length*100);document.getElementById('percent').textContent=pct+'%';document.getElementById('progressBar').style.width=pct+'%';boxes.forEach(x=>x.parentElement.classList.toggle('done',x.checked));state.energy=Math.min(100,78+done*4);document.getElementById('energyValue').textContent=state.energy+' / 100';save();}
+
+function startReset(){state.day=1;state.tasks=0;state.energy=78;state.customDone={};save();resetTasks();goTo(5);}
+function resetTasks(){document.querySelectorAll('#tasks input').forEach(i=>{i.checked=false;i.parentElement.classList.remove('done')});renderCustomHabits();taskChanged();}
+function getActiveCustomHabits(){return state.customHabits.filter(h=>{if(h.frequency==='weekdays')return ![0,6].includes(new Date().getDay());if(h.frequency==='weekends')return [0,6].includes(new Date().getDay());return true;});}
+function taskChanged(){const boxes=[...document.querySelectorAll('#tasks input')];const customBoxes=[...document.querySelectorAll('.custom-task input')];const done=boxes.filter(x=>x.checked).length+customBoxes.filter(x=>x.checked).length;const total=boxes.length+customBoxes.length;state.tasks=done;const pct=total?Math.round(done/total*100):0;const percent=document.getElementById('percent');const progress=document.getElementById('progressBar');if(percent)percent.textContent=pct+'%';if(progress)progress.style.width=pct+'%';boxes.forEach(x=>x.parentElement.classList.toggle('done',x.checked));customBoxes.forEach(x=>x.parentElement.classList.toggle('done',x.checked));state.energy=Math.min(100,78+done*4);const ev=document.getElementById('energyValue');const eb=document.getElementById('energyBar');if(ev)ev.textContent=state.energy+' / 100';if(eb)eb.style.width=state.energy+'%';updateTaskSummary(done,total);save();}
+function updateTaskSummary(done,total){const el=document.getElementById('taskSummary');if(el)el.textContent=`${done} / ${total} missões concluídas`;}
 function save(){localStorage.setItem('reset30',JSON.stringify(state));}
-function load(){try{const x=JSON.parse(localStorage.getItem('reset30'));if(x)Object.assign(state,x)}catch(e){}}
+function load(){try{const x=JSON.parse(localStorage.getItem('reset30'));if(x)Object.assign(state,x);if(!Array.isArray(state.customHabits))state.customHabits=[];if(!state.customDone)state.customDone={};}catch(e){}}
 function resetApp(){if(confirm('Tem certeza que deseja reiniciar seu RESET 30?')){localStorage.removeItem('reset30');location.reload();}}
-function buildCalendar(){const c=document.getElementById('calendar');if(!c)return;for(let i=1;i<=30;i++){const s=document.createElement('span');s.textContent=i;s.className=i<state.day?'done':i===state.day?'partial':'';c.appendChild(s)}}
+function buildCalendar(){const c=document.getElementById('calendar');if(!c)return;c.innerHTML='';for(let i=1;i<=30;i++){const s=document.createElement('span');s.textContent=i;s.className=i<state.day?'done':i===state.day?'partial':'';c.appendChild(s)}}
 function startTimer(title){clearInterval(timerInterval);const box=document.getElementById('timerBox'),titleEl=document.getElementById('timerTitle'),timeEl=document.getElementById('timer'),bar=document.getElementById('timerBar');box.classList.remove('hidden');titleEl.textContent=title;let left=120;function tick(){const m=String(Math.floor(left/60)).padStart(2,'0'),s=String(left%60).padStart(2,'0');timeEl.textContent=m+':'+s;bar.style.width=((120-left)/120*100)+'%';if(left<=0){clearInterval(timerInterval);titleEl.textContent='⚡ IMPULSO QUEBRADO';timeEl.textContent='CONCLUÍDO';bar.style.width='100%';state.energy=Math.min(100,state.energy+5);save();return}left--}tick();timerInterval=setInterval(tick,1000);}
-load();document.getElementById('dayLabel').textContent='DIA '+String(state.day).padStart(2,'0')+' / 30';document.getElementById('streak').textContent=state.day;buildCalendar();taskChanged();
+
+function openHabitModal(){const modal=document.getElementById('habitModal');modal.classList.remove('hidden');document.body.classList.add('modal-open');renderCustomHabitsList();setTimeout(()=>document.getElementById('habitName')?.focus(),100);}
+function closeHabitModal(e){if(e && e.target!==e.currentTarget)return;document.getElementById('habitModal').classList.add('hidden');document.body.classList.remove('modal-open');}
+function selectHabitPreset(name){document.getElementById('habitName').value=name;document.getElementById('habitTarget').focus();}
+function addHabit(){const name=document.getElementById('habitName').value.trim();const target=document.getElementById('habitTarget').value.trim();const frequency=document.getElementById('habitFrequency').value;if(!name){document.getElementById('habitName').focus();return;}state.customHabits.push({id:Date.now(),name,target,frequency});document.getElementById('habitName').value='';document.getElementById('habitTarget').value='';save();renderCustomHabits();renderCustomHabitsList();taskChanged();}
+function removeHabit(id){state.customHabits=state.customHabits.filter(h=>h.id!==id);delete state.customDone[`${state.day}-${id}`];save();renderCustomHabits();renderCustomHabitsList();taskChanged();}
+function renderCustomHabits(){const container=document.getElementById('tasks');if(!container)return;container.querySelectorAll('.custom-task').forEach(x=>x.remove());const active=getActiveCustomHabits();active.forEach(h=>{const key=`${state.day}-${h.id}`;const label=document.createElement('label');label.className='custom-task';label.innerHTML=`<input type="checkbox" ${state.customDone[key]?'checked':''}> <span><b>${escapeHtml(h.name)}</b>${h.target?`<small>${escapeHtml(h.target)}</small>`:''}<em>PERSONALIZADO</em></span>`;const input=label.querySelector('input');input.addEventListener('change',()=>{state.customDone[key]=input.checked;taskChanged();});container.appendChild(label);});}
+function renderCustomHabitsList(){const list=document.getElementById('customHabitsList');if(!list)return;if(!state.customHabits.length){list.innerHTML='<p class="empty-habits">Nenhum hábito personalizado ainda.</p>';return;}list.innerHTML='<div class="list-title">MEUS HÁBITOS</div>'+state.customHabits.map(h=>`<div class="habit-manage"><div><b>${escapeHtml(h.name)}</b><small>${escapeHtml(h.target||frequencyLabel(h.frequency))}</small></div><button onclick="removeHabit(${h.id})" aria-label="Excluir hábito">×</button></div>`).join('');}
+function frequencyLabel(v){return v==='weekdays'?'Segunda a sexta':v==='weekends'?'Sábado e domingo':'Todos os dias';}
+function escapeHtml(text){return text.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+
+load();
+document.getElementById('dayLabel').textContent='DIA '+String(state.day).padStart(2,'0')+' / 30';
+document.getElementById('streak').textContent=state.day;
+buildCalendar();
+renderCustomHabits();
+renderCustomHabitsList();
+taskChanged();

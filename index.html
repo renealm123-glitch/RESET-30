@@ -64,7 +64,7 @@
     <section class="screen" id="screen-5">
       <div class="top"><span class="brand">RESET 30</span><span id="dayLabel">DIA 01 / 30</span></div>
       <div class="welcome"><div><p class="eyebrow">SEU RESET</p><h2>Hoje é dia de continuar.</h2></div><div class="streak">🔥 <b id="streak">1</b><small>dias</small></div></div>
-      <div class="progress-card"><div><span>Progresso de hoje</span><b id="percent">0%</b></div><div class="bar"><i id="progressBar"></i></div></div>
+      <div class="progress-card"><div><span>Progresso de hoje</span><b id="percent">0%</b></div><div class="task-summary" id="taskSummary">0 / 5 missões concluídas</div><div class="bar"><i id="progressBar"></i></div></div>
       <h3>📋 Missões de hoje</h3>
       <div class="tasks" id="tasks">
         <label><input type="checkbox" onchange="taskChanged()"> <span>🎯 25 min de foco profundo</span></label>
@@ -73,7 +73,9 @@
         <label><input type="checkbox" onchange="taskChanged()"> <span>📖 10 min de leitura</span></label>
         <label><input type="checkbox" onchange="taskChanged()"> <span>😴 Dormir no horário planejado</span></label>
       </div>
-      <div class="energy"><span>⚡ Energia</span><b id="energyValue">78 / 100</b><div class="bar"><i style="width:78%"></i></div></div>
+      <button class="add-habit" onclick="openHabitModal()">＋ ADICIONAR AO MEU RESET</button>
+      <p class="habit-tip">Você pode acrescentar novos hábitos aos poucos. Consistência antes de quantidade.</p>
+      <div class="energy"><span>⚡ Energia</span><b id="energyValue">78 / 100</b><div class="bar"><i id="energyBar" style="width:78%"></i></div></div>
       <button class="emergency" onclick="goTo(9)">🚨 ESTOU QUASE DESISTINDO</button>
       <nav class="bottom"><button onclick="goTo(5)">🏠<small>Hoje</small></button><button onclick="goTo(6)">📊<small>Progresso</small></button><button onclick="goTo(7)">📅<small>Histórico</small></button><button onclick="goTo(8)">🏆<small>Conquistas</small></button><button onclick="goTo(10)">⚙️<small>Perfil</small></button></nav>
     </section>
@@ -126,6 +128,40 @@
       <blockquote>“Você não construiu apenas uma sequência.<br>Você construiu um novo padrão.”</blockquote>
       <button class="primary" onclick="goTo(1)">🔄 COMEÇAR NOVO RESET</button><button class="secondary" onclick="goTo(6)">📊 VER MINHA JORNADA</button></div>
     </section>
+
+    <div class="modal-backdrop hidden" id="habitModal" onclick="closeHabitModal(event)">
+      <div class="habit-modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeHabitModal()" aria-label="Fechar">×</button>
+        <p class="eyebrow">PERSONALIZE SEU RESET</p>
+        <h2>＋ Adicionar ao meu Reset</h2>
+        <p class="muted">Escolha algo que você quer melhorar durante os próximos dias.</p>
+        <div class="habit-presets">
+          <button type="button" onclick="selectHabitPreset('📚 Estudar mais')">📚 Estudar</button>
+          <button type="button" onclick="selectHabitPreset('💧 Beber mais água')">💧 Água</button>
+          <button type="button" onclick="selectHabitPreset('🥗 Melhorar alimentação')">🥗 Alimentação</button>
+          <button type="button" onclick="selectHabitPreset('🧘 Meditação')">🧘 Meditação</button>
+          <button type="button" onclick="selectHabitPreset('🌅 Acordar mais cedo')">🌅 Acordar cedo</button>
+          <button type="button" onclick="selectHabitPreset('🧹 Organizar meu espaço')">🧹 Organização</button>
+          <button type="button" onclick="selectHabitPreset('💰 Controlar gastos')">💰 Gastos</button>
+          <button type="button" onclick="selectHabitPreset('✍️ Escrever no diário')">✍️ Diário</button>
+        </div>
+        <label class="field-label">Nome do hábito
+          <input id="habitName" class="habit-input" maxlength="50" placeholder="Ex.: Beber 2L de água">
+        </label>
+        <label class="field-label">Meta / detalhe
+          <input id="habitTarget" class="habit-input" maxlength="60" placeholder="Ex.: 2 litros por dia">
+        </label>
+        <label class="field-label">Quando fazer?
+          <select id="habitFrequency" class="habit-input">
+            <option value="daily">Todos os dias</option>
+            <option value="weekdays">Segunda a sexta</option>
+            <option value="weekends">Sábado e domingo</option>
+          </select>
+        </label>
+        <button class="primary" onclick="addHabit()">ADICIONAR HÁBITO →</button>
+        <div class="custom-habits-list" id="customHabitsList"></div>
+      </div>
+    </div>
   </main>
   <script src="script.js"></script>
 </body>
